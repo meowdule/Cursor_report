@@ -1,0 +1,191 @@
+# Website QA Report
+
+- Target: https://tassi.alicerabbit.space/landing
+- Run at: 2026-04-29T07:21:49.967Z
+- Pages crawled: 8
+- Broken pages (>=400): 7
+- Pages with JS errors: 0
+- Average load: 457 ms
+- **Behavior outcomes:** PASS=37 FAIL=1 NO_RESPONSE=36 BLOCKED=12
+- **Artifacts (screenshots, state JSON, network logs):** `reports/2026-04-29T07-21-49-967Z/artifacts`
+- **QA dashboard (Lighthouse-style HTML):** `report.dashboard.html`
+- **입력 요청 (.env, JSON 아님):** 프로젝트 `config/qa-inputs.REQUEST.env` (매 실행 갱신, 한글 설명 포함)
+- **Lighthouse 평균(8개 페이지):** perf=43 a11y=89 best=96 seo=81
+
+## Action-level results (behavior QA)
+
+- **[NO_RESPONSE]** (interaction) 버튼 「비밀번호 표시」 클릭 @ https://tassi.alicerabbit.space/ — href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png)_
+- **[PASS]** (interaction) 버튼 「로그인」 클릭 @ https://tassi.alicerabbit.space/ — 클릭 후 반응 확인 (오류·경고 스타일 UI, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png)_
+- **[PASS]** (interaction) 버튼 「카카오로 시작하기」 클릭 @ https://tassi.alicerabbit.space/ — 클릭 후 반응 확인 (URL 변경, 제목 변경, 알림·라이브 영역, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png)_
+- **[PASS]** (interaction) 링크 「회원가입 하기」 클릭 @ https://tassi.alicerabbit.space/ — 이동 후 URL(경로·쿼리)가 링크 기대와 일치함. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「서비스소개」 클릭 @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[PASS]** (interaction) 버튼 「이용요금」 클릭 @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[PASS]** (interaction) 버튼 「무료 견적신청」 클릭 @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「무료 견적 알아보기」 클릭 (1/4 동일 라벨) @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[PASS]** (interaction) 링크 「무료 견적 알아보기」 클릭 (2/4 동일 라벨) @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「지금 신청하기」 클릭 (1/3 동일 라벨) @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「무료 견적 알아보기」 클릭 (3/4 동일 라벨) @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[PASS]** (interaction) 링크 「무료 견적 알아보기」 클릭 (4/4 동일 라벨) @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「지금 신청하기」 클릭 (2/3 동일 라벨) @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[PASS]** (interaction) 링크 「지금 신청하기」 클릭 (3/3 동일 라벨) @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: https://pf.kakao.com/_PRFAG _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[PASS]** (interaction) 링크 「이용약관」 클릭 @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[PASS]** (interaction) 링크 「개인정보 처리방침」 클릭 @ https://tassi.alicerabbit.space/landing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png)_
+- **[PASS]** (interaction) 버튼 「서비스소개」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[PASS]** (interaction) 버튼 「이용요금」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「무료 견적신청」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「기능 테스트」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「사용자 테스트」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「클라이언트 성능 테스트」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「네트워크 성능 테스트」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「벤치마크 테스트」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「로그 확인 테스트」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「인증 테스트」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「앱 + 웹」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「앱」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「모바일 웹」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「웹」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「5 일」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「15 일」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「30 일」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「60 일」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「정기 구독 (연 단위)」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「ASAP」 클릭 @ https://tassi.alicerabbit.space/landing/estimate — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png)_
+- **[PASS]** (interaction) 버튼 「서비스소개」 클릭 @ https://tassi.alicerabbit.space/landing/terms-of-service — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before.png)_
+- **[PASS]** (interaction) 버튼 「이용요금」 클릭 @ https://tassi.alicerabbit.space/landing/terms-of-service — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before.png)_
+- **[PASS]** (interaction) 버튼 「무료 견적신청」 클릭 @ https://tassi.alicerabbit.space/landing/terms-of-service — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before.png)_
+- **[PASS]** (interaction) 버튼 「서비스소개」 클릭 @ https://tassi.alicerabbit.space/landing/privacy-policy — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png)_
+- **[PASS]** (interaction) 버튼 「이용요금」 클릭 @ https://tassi.alicerabbit.space/landing/privacy-policy — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png)_
+- **[PASS]** (interaction) 버튼 「무료 견적신청」 클릭 @ https://tassi.alicerabbit.space/landing/privacy-policy — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png)_
+- **[PASS]** (interaction) 링크 「privacy.kisa.or.kr」 클릭 @ https://tassi.alicerabbit.space/landing/privacy-policy — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: https://privacy.kisa.or.kr/main.do _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png)_
+- **[PASS]** (interaction) 링크 「www.kopico.go.kr」 클릭 @ https://tassi.alicerabbit.space/landing/privacy-policy — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: https://www.kopico.go.kr/main/main.do _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png)_
+- **[PASS]** (interaction) 링크 「www.simpan.go.kr」 클릭 @ https://tassi.alicerabbit.space/landing/privacy-policy — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: chrome-error://chromewebdata/ _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png)_
+- **[PASS]** (interaction) 링크 「www.spo.go.kr」 클릭 @ https://tassi.alicerabbit.space/landing/privacy-policy — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: chrome-error://chromewebdata/ _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png)_
+- **[PASS]** (interaction) 링크 「ecrm.cyber.go.kr」 클릭 @ https://tassi.alicerabbit.space/landing/privacy-policy — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: https://ecrm.police.go.kr/minwon/main _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png)_
+- **[PASS]** (interaction) 버튼 「서비스소개」 클릭 @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「이용요금」 클릭 @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[PASS]** (interaction) 버튼 「무료 견적신청」 클릭 @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「문의하기」 클릭 (1/2 동일 라벨) @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[PASS]** (interaction) 링크 「문의하기」 클릭 (2/2 동일 라벨) @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: https://pf.kakao.com/_PRFAG _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「무료 견적 받아보기」 클릭 (1/2 동일 라벨) @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[PASS]** (interaction) 링크 「무료 견적 받아보기」 클릭 (2/2 동일 라벨) @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「지금 신청하기」 클릭 (1/2 동일 라벨) @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[PASS]** (interaction) 링크 「지금 신청하기」 클릭 (2/2 동일 라벨) @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: https://pf.kakao.com/_PRFAG _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[PASS]** (interaction) 링크 「이용약관」 클릭 @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[PASS]** (interaction) 링크 「개인정보 처리방침」 클릭 @ https://tassi.alicerabbit.space/landing/pricing — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[PASS]** (interaction) 링크 「로그인으로 돌아가기」 클릭 @ https://tassi.alicerabbit.space/login/register — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「비밀번호 표시」 클릭 (1/2 동일 라벨) @ https://tassi.alicerabbit.space/login/register — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「비밀번호 표시」 클릭 (2/2 동일 라벨) @ https://tassi.alicerabbit.space/login/register — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png)_
+- **[PASS]** (interaction) 버튼 「보기」 클릭 (1/2 동일 라벨) @ https://tassi.alicerabbit.space/login/register — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (모달·대화상자, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png)_
+- **[PASS]** (interaction) 버튼 「보기」 클릭 (2/2 동일 라벨) @ https://tassi.alicerabbit.space/login/register — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (모달·대화상자, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png)_
+- **[NO_RESPONSE]** (interaction) 버튼 「비밀번호 표시」 클릭 @ https://tassi.alicerabbit.space/login — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png)_
+- **[PASS]** (interaction) 버튼 「로그인」 클릭 @ https://tassi.alicerabbit.space/login — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (오류·경고 스타일 UI, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png)_
+- **[PASS]** (interaction) 버튼 「카카오로 시작하기」 클릭 @ https://tassi.alicerabbit.space/login — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 제목 변경, 알림·라이브 영역, 본문·안내 문구 변화). _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png)_
+- **[PASS]** (interaction) 링크 「회원가입 하기」 클릭 @ https://tassi.alicerabbit.space/login — [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png)_
+- **[FAIL]** (form) form @ https://tassi.alicerabbit.space/ — XHR/fetch error during submit: [{"url":"https://tassi-api.alicerabbit.space:3004/auth/login","method":"POST","status":401,"resourceType":"xhr","timestamp":1777447573669,"bodySnippet":null}] _(before:reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png after:reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_submit_valid_all_fail-after.png net:reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_submit_valid_all_fail-network.json)_
+- **[PASS]** (form) form @ https://tassi.alicerabbit.space/ — Validation feedback present (intent=true, nativeInvalid=true). Messages: 이메일 올바르지 않습니다. | 이메일 주소에 '@'를 포함해 주세요. 'not-an-email'에 '@'가 없습니다. _(before:reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_invalid_email_format_before-before.png)_
+- **[BLOCKED]** (form) form @ https://tassi.alicerabbit.space/landing — HTTP 403 _(after:reports/2026-04-29T07-21-49-967Z/artifacts/form_load_4db4b63c-after.png)_
+- **[BLOCKED]** (form) form @ https://tassi.alicerabbit.space/landing/estimate — HTTP 403 _(after:reports/2026-04-29T07-21-49-967Z/artifacts/form_load_d1fc1eb2-after.png)_
+- **[BLOCKED]** (form) form @ https://tassi.alicerabbit.space/landing/terms-of-service — HTTP 403 _(after:reports/2026-04-29T07-21-49-967Z/artifacts/form_load_c8a285a5-after.png)_
+- **[BLOCKED]** (form) form @ https://tassi.alicerabbit.space/landing/privacy-policy — HTTP 403 _(after:reports/2026-04-29T07-21-49-967Z/artifacts/form_load_7c4bd681-after.png)_
+- **[BLOCKED]** (form) form @ https://tassi.alicerabbit.space/landing/pricing — HTTP 403 _(after:reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png)_
+- **[BLOCKED]** (form) form @ https://tassi.alicerabbit.space/login/register — HTTP 403 _(after:reports/2026-04-29T07-21-49-967Z/artifacts/form_load_8a1a80e3-after.png)_
+- **[BLOCKED]** (form) form @ https://tassi.alicerabbit.space/login — HTTP 403 _(after:reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png)_
+- **[BLOCKED]** (login) Click: 로그인으로 돌아가기 @ https://tassi.alicerabbit.space/login/register — Page load HTTP 403
+- **[NO_RESPONSE]** (login) login_group @ https://tassi.alicerabbit.space/login/register — No matching control found for this category.
+- **[NO_RESPONSE]** (login) login_group @ https://tassi.alicerabbit.space/login/register — No matching control found for this category.
+- **[BLOCKED]** (login) Click: 비밀번호 표시 @ https://tassi.alicerabbit.space/login/register — Page load HTTP 403
+- **[NO_RESPONSE]** (login) login_group @ https://tassi.alicerabbit.space/login/register — No matching control found for this category.
+- **[BLOCKED]** (login) Click: 로그인 @ https://tassi.alicerabbit.space/login — Page load HTTP 403
+- **[BLOCKED]** (login) Click: 회원가입 하기 @ https://tassi.alicerabbit.space/login — Page load HTTP 403
+- **[NO_RESPONSE]** (login) login_group @ https://tassi.alicerabbit.space/login — No matching control found for this category.
+- **[BLOCKED]** (login) Click: 비밀번호 표시 @ https://tassi.alicerabbit.space/login — Page load HTTP 403
+- **[NO_RESPONSE]** (login) login_group @ https://tassi.alicerabbit.space/login — No matching control found for this category.
+
+## Login page grouping (when detected)
+
+- **https://tassi.alicerabbit.space/login/register**
+  - [BLOCKED] (login) Click: 로그인으로 돌아가기: Page load HTTP 403
+  - [NO_RESPONSE] (sign_up) : No matching control found for this category.
+  - [NO_RESPONSE] (find_id) : No matching control found for this category.
+  - [BLOCKED] (reset_password) Click: 비밀번호 표시: Page load HTTP 403
+  - [NO_RESPONSE] (home_public) : No matching control found for this category.
+- **https://tassi.alicerabbit.space/login**
+  - [BLOCKED] (login) Click: 로그인: Page load HTTP 403
+  - [BLOCKED] (sign_up) Click: 회원가입 하기: Page load HTTP 403
+  - [NO_RESPONSE] (find_id) : No matching control found for this category.
+  - [BLOCKED] (reset_password) Click: 비밀번호 표시: Page load HTTP 403
+  - [NO_RESPONSE] (home_public) : No matching control found for this category.
+
+## Combined recommendations (structure + QA)
+
+- [HIGH] HTTP status 403 → Repair routing, links, or backend responses for this URL. (https://tassi.alicerabbit.space/landing)
+- [HIGH] HTTP status 403 → Repair routing, links, or backend responses for this URL. (https://tassi.alicerabbit.space/landing/estimate)
+- [HIGH] HTTP status 403 → Repair routing, links, or backend responses for this URL. (https://tassi.alicerabbit.space/landing/terms-of-service)
+- [HIGH] HTTP status 403 → Repair routing, links, or backend responses for this URL. (https://tassi.alicerabbit.space/landing/privacy-policy)
+- [HIGH] HTTP status 403 → Repair routing, links, or backend responses for this URL. (https://tassi.alicerabbit.space/landing/pricing)
+- [HIGH] HTTP status 403 → Repair routing, links, or backend responses for this URL. (https://tassi.alicerabbit.space/login/register)
+- [HIGH] HTTP status 403 → Repair routing, links, or backend responses for this URL. (https://tassi.alicerabbit.space/login)
+- [HIGH] [QA FAIL] form: XHR/fetch error during submit: [{"url":"https://tassi-api.alicerabbit.space:3004/auth/login","method":"POST","status":401,"resourceType":"xhr","timestamp":1777447573669,"bodySnippet":null}] → Fix functional behavior so the action meets expected navigation, modal/toast feedback, or rules. (https://tassi.alicerabbit.space/)
+- [HIGH] [QA BLOCKED] form: HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/landing)
+- [HIGH] [QA BLOCKED] form: HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/landing/estimate)
+- [HIGH] [QA BLOCKED] form: HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/landing/terms-of-service)
+- [HIGH] [QA BLOCKED] form: HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/landing/privacy-policy)
+- [HIGH] [QA BLOCKED] form: HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/landing/pricing)
+- [HIGH] [QA BLOCKED] form: HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/login/register)
+- [HIGH] [QA BLOCKED] form: HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/login)
+- [HIGH] [QA BLOCKED] Click: 로그인으로 돌아가기: Page load HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/login/register)
+- [HIGH] [QA BLOCKED] Click: 비밀번호 표시: Page load HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/login/register)
+- [HIGH] [QA BLOCKED] Click: 로그인: Page load HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/login)
+- [HIGH] [QA BLOCKED] Click: 회원가입 하기: Page load HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/login)
+- [HIGH] [QA BLOCKED] Click: 비밀번호 표시: Page load HTTP 403 → Unblock or authenticate (403/401) before expecting behavior checks to work. (https://tassi.alicerabbit.space/login)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「비밀번호 표시」 클릭: href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「서비스소개」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「무료 견적 알아보기」 클릭 (1/4 동일 라벨): [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「지금 신청하기」 클릭 (1/3 동일 라벨): [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「무료 견적 알아보기」 클릭 (3/4 동일 라벨): [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「지금 신청하기」 클릭 (2/3 동일 라벨): [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「무료 견적신청」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「기능 테스트」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「사용자 테스트」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「클라이언트 성능 테스트」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「네트워크 성능 테스트」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「벤치마크 테스트」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「로그 확인 테스트」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「인증 테스트」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「앱 + 웹」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「앱」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「모바일 웹」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「웹」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「5 일」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「15 일」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「30 일」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「60 일」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「정기 구독 (연 단위)」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「ASAP」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/estimate)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「이용요금」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/pricing)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「문의하기」 클릭 (1/2 동일 라벨): [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/pricing)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「무료 견적 받아보기」 클릭 (1/2 동일 라벨): [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/pricing)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「지금 신청하기」 클릭 (1/2 동일 라벨): [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/landing/pricing)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「비밀번호 표시」 클릭 (1/2 동일 라벨): [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/login/register)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「비밀번호 표시」 클릭 (2/2 동일 라벨): [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/login/register)
+- [MEDIUM] [QA NO_RESPONSE] 버튼 「비밀번호 표시」 클릭: [HTTP 403 응답이지만 페이지 렌더링/클릭 가능] href/data-to 없고 화면·모달·알림 변화 없음 — 필요 시 interaction-rules로 경로·제목 기대값을 지정. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/login)
+- [MEDIUM] [QA NO_RESPONSE] login_group: No matching control found for this category. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/login/register)
+- [MEDIUM] [QA NO_RESPONSE] login_group: No matching control found for this category. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/login/register)
+- [MEDIUM] [QA NO_RESPONSE] login_group: No matching control found for this category. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/login/register)
+- [MEDIUM] [QA NO_RESPONSE] login_group: No matching control found for this category. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/login)
+- [MEDIUM] [QA NO_RESPONSE] login_group: No matching control found for this category. → Verify click handlers, routing, and visibility; silent failures confuse users. (https://tassi.alicerabbit.space/login)
+- [LOW] Missing H1 → Add one clear H1 to communicate page purpose. (https://tassi.alicerabbit.space/)
+- [LOW] Missing H1 → Add one clear H1 to communicate page purpose. (https://tassi.alicerabbit.space/landing/terms-of-service)
+- [LOW] Missing H1 → Add one clear H1 to communicate page purpose. (https://tassi.alicerabbit.space/landing/privacy-policy)
+- [LOW] Missing H1 → Add one clear H1 to communicate page purpose. (https://tassi.alicerabbit.space/login)
+
+## Crawled page details
+
+- https://tassi.alicerabbit.space/ | status=200 | load=705ms | title="T-ASSI"
+- https://tassi.alicerabbit.space/landing | status=403 | load=450ms | title="T-ASSI"
+- https://tassi.alicerabbit.space/landing/estimate | status=403 | load=464ms | title="T-ASSI"
+- https://tassi.alicerabbit.space/landing/terms-of-service | status=403 | load=291ms | title="T-ASSI"
+- https://tassi.alicerabbit.space/landing/privacy-policy | status=403 | load=304ms | title="T-ASSI"
+- https://tassi.alicerabbit.space/landing/pricing | status=403 | load=290ms | title="T-ASSI"
+- https://tassi.alicerabbit.space/login/register | status=403 | load=506ms | title="T-ASSI"
+- https://tassi.alicerabbit.space/login | status=403 | load=644ms | title="T-ASSI"

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>QA — https://tassi.alicerabbit.space/landing</title>
+  <style>
+    :root {
+      --lh-pass: #0cce6b;
+      --lh-avg: #ffa400;
+      --lh-fail: #ff4e42;
+      --lh-link: #06f;
+      --lh-text: #212121;
+      --lh-text-2: #424242;
+      --lh-divider: #ebebeb;
+      --lh-bg: #fafafa;
+      --lh-paper: #ffffff;
+      --lh-table-h: #eef1f4;
+      --radius: 3px;
+      --font: system-ui, Roboto, "Helvetica Neue", Arial, "Noto Sans KR", "Malgun Gothic", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: radial-gradient(1200px 500px at 10% -20%, #eef6ff, transparent 55%),
+                  radial-gradient(1000px 440px at 100% -18%, #f5f0ff, transparent 48%),
+                  var(--lh-bg);
+      color: var(--lh-text);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .shell { max-width: 920px; margin: 0 auto; padding: 0 24px 40px; }
+    .mast {
+      background: var(--lh-paper);
+      border-bottom: 1px solid var(--lh-divider);
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+    }
+    .mast-inner { max-width: 920px; margin: 0 auto; padding: 16px 24px 18px; }
+    .mast-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--lh-text-2); margin-bottom: 4px; }
+    .mast h1 { margin: 0 0 6px; font-size: 22px; font-weight: 400; color: var(--lh-text); letter-spacing: -0.02em; }
+    .mast-url { font-size: 13px; word-break: break-all; }
+    .mast-url a { color: var(--lh-link); text-decoration: none; }
+    .mast-url a:hover { text-decoration: underline; }
+    .mast-meta { margin-top: 8px; font-size: 12px; color: var(--lh-text-2); }
+
+    .panel {
+      background: var(--lh-paper);
+      border: 1px solid var(--lh-divider);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 26px rgb(30 41 59 / 0.08);
+    }
+    .hero-panel { padding: 24px 20px; }
+    .hero-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .donut-legend { justify-content: center; }
+      .hero-top-row { justify-content: center; text-align: center; }
+    }
+    .hero-top-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 28px 40px;
+      padding-bottom: 8px;
+    }
+    .gauge-box { flex-shrink: 0; }
+    .gauge-svg .gauge-num { font-size: 28px; font-weight: 500; fill: var(--lh-text); font-family: var(--font); }
+    .gauge-svg .gauge-cap { font-size: 11px; fill: var(--lh-text-2); font-family: var(--font); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .donut-side { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; }
+    .donut-wrap {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      flex-shrink: 0;
+    }
+    .donut {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(from -90deg, #0cce6b 0deg 154.88372093023256deg, #ff4e42 154.88372093023256deg 159.06976744186045deg, #ffa400 159.06976744186045deg 209.30232558139534deg, #9aa0a6 209.30232558139534deg 360deg);
+      box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.06);
+    }
+    .donut-hole {
+      position: absolute;
+      inset: 22%;
+      border-radius: 50%;
+      background: var(--lh-paper);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px var(--lh-divider);
+    }
+    .donut-total { font-size: 26px; font-weight: 500; line-height: 1; color: var(--lh-text); }
+    .donut-sub { font-size: 11px; color: var(--lh-text-2); margin-top: 2px; }
+    .donut-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      font-size: 12px;
+      color: var(--lh-text-2);
+    }
+    .lg { display: inline-flex; align-items: center; gap: 6px; }
+    .lg i { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    .mini-spark {
+      margin-top: 4px;
+      padding-top: 16px;
+      border-top: 1px solid var(--lh-divider);
+    }
+    .spark-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--lh-text-2); margin-bottom: 10px; }
+    .spark-bars { display: flex; align-items: flex-end; gap: 8px; height: 56px; }
+    .spark-col { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .spark-bar {
+      width: 100%;
+      max-width: 48px;
+      border-radius: 2px 2px 0 0;
+      background: linear-gradient(180deg, var(--lh-pass), #09a256);
+      min-height: 4px;
+      transition: height 0.2s ease;
+    }
+    .spark-bar.avg { background: linear-gradient(180deg, var(--lh-avg), #e69400); }
+    .spark-bar.bad { background: linear-gradient(180deg, var(--lh-fail), #c62828); }
+    .spark-bar.na { background: #cfd8dc; min-height: 6px; }
+    .spark-lab { font-size: 10px; color: var(--lh-text-2); text-align: center; line-height: 1.2; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+    .bar-row { display: grid; grid-template-columns: 100px 1fr 36px; align-items: center; gap: 10px; font-size: 13px; }
+    .bar-lab { color: var(--lh-text-2); }
+    .bar-track { height: 8px; background: #e8eaed; border-radius: 4px; overflow: hidden; }
+    .bar-fill { display: block; height: 100%; border-radius: 4px; min-width: 2px; }
+    .bar-fill.good { background: var(--lh-pass); }
+    .bar-fill.avg { background: var(--lh-avg); }
+    .bar-fill.bad { background: var(--lh-fail); }
+    .bar-fill.na { background: #b0bec5; }
+    .bar-num { text-align: right; font-weight: 500; font-variant-numeric: tabular-nums; font-size: 13px; color: var(--lh-text); }
+    .bar-num.good { color: var(--lh-pass); }
+    .bar-num.avg { color: #e65100; }
+    .bar-num.bad { color: var(--lh-fail); }
+    .bar-num.na { color: var(--lh-text-2); }
+
+    .alert {
+      border: 1px solid #ffe082;
+      background: #fffde7;
+      color: #5d4037;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+    .alert code { font-size: 0.85em; background: rgb(255 249 196 / 0.9); padding: 2px 6px; border-radius: 2px; }
+
+    details.fold {
+      background: var(--lh-paper);
+      border: 1px solid var(--lh-divider);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.03);
+    }
+    details.fold > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 500;
+      font-size: 14px;
+      background: var(--lh-table-h);
+      color: var(--lh-text);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    details.fold:not([open]) > summary { border-radius: var(--radius); }
+    details.fold > summary::-webkit-details-marker { display: none; }
+    details.fold > summary:hover { filter: brightness(0.98); }
+    details.fold[open] > summary { border-bottom: 1px solid var(--lh-divider); }
+    .sum-meta { font-size: 12px; font-weight: 400; color: var(--lh-text-2); margin-top: 2px; }
+    .chev { color: var(--lh-text-2); font-size: 18px; line-height: 1; transition: transform 0.15s; }
+    details.fold[open] .chev { transform: rotate(90deg); }
+    .fold-body { padding: 16px; }
+
+    .metric-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+    .metric { padding: 2px 0; }
+    .metric-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .metric-name { font-size: 12px; color: var(--lh-text-2); font-weight: 500; }
+    .metric-num { font-size: 18px; font-weight: 500; font-variant-numeric: tabular-nums; }
+    .metric-num.good { color: var(--lh-pass); }
+    .metric-num.avg { color: #e65100; }
+    .metric-num.bad { color: var(--lh-fail); }
+    .metric-num.na { color: var(--lh-text-2); }
+    .metric-track { height: 6px; background: #e8eaed; border-radius: 3px; overflow: hidden; }
+    .metric-fill { display: block; height: 100%; border-radius: 3px; }
+    .metric-fill.good { background: var(--lh-pass); }
+    .metric-fill.avg { background: var(--lh-avg); }
+    .metric-fill.bad { background: var(--lh-fail); }
+    .metric-fill.na { background: #b0bec5; }
+    .metric-sub { display: block; font-size: 11px; color: var(--lh-text-2); margin-top: 4px; }
+
+    .hint { font-size: 13px; color: var(--lh-text-2); margin: 0; line-height: 1.45; }
+    .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 4px; border-radius: 6px; border: 1px solid #e6ebf2; }
+    .tbl { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1280px; table-layout: auto; }
+    .tbl th, .tbl td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--lh-divider); vertical-align: top; }
+    .tbl th { color: var(--lh-text-2); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; background: var(--lh-table-h); }
+    .dim { color: var(--lh-text-2); }
+    .td-wrap { white-space: nowrap; }
+    .url-cell { white-space: nowrap; min-width: 360px; font-family: ui-monospace, monospace; }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }
+    .PASS { background: #e8f5e9; color: #1b5e20; }
+    .FAIL { background: #ffebee; color: #b71c1c; }
+    .BLOCKED { background: #fff8e1; color: #e65100; }
+    .NO_RESPONSE { background: #eceff1; color: #455a64; }
+    .badge { font-size: 11px; padding: 2px 8px; border-radius: 2px; background: #fff3e0; color: #e65100; font-weight: 600; }
+    .tag-soft { font-size: 10px; padding: 1px 6px; border-radius: 2px; background: #e3f2fd; color: #1565c0; font-weight: 600; }
+
+    .ext-link { color: var(--lh-link); text-decoration: none; word-break: break-all; }
+    .ext-link:hover { text-decoration: underline; }
+
+    .foot {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--lh-divider);
+      font-size: 13px;
+      color: var(--lh-text-2);
+    }
+    .foot-links { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+    a.pill-link {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 2px;
+      border: 1px solid var(--lh-divider);
+      background: var(--lh-paper);
+      color: var(--lh-link);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 12px;
+    }
+    a.pill-link:hover { background: var(--lh-bg); border-color: #90caf9; }
+    a.pill-link.mini { padding: 2px 7px; font-size: 11px; margin-right: 4px; }
+    code { font-size: 12px; background: #eceff1; padding: 2px 5px; border-radius: 2px; font-family: ui-monospace, monospace; }
+  </style>
+</head>
+<body>
+  <header class="mast">
+    <div class="mast-inner">
+      <div class="mast-label">Behavior QA</div>
+      <h1>동작 검증 결과</h1>
+      <div class="mast-url"><a href="https://tassi.alicerabbit.space/landing" target="_blank" rel="noopener noreferrer">https://tassi.alicerabbit.space/landing</a></div>
+      <div class="mast-meta">2026-04-29T07:21:49.967Z · 페이지 8 · 평균 로드 457 ms</div>
+    </div>
+  </header>
+
+  <div class="shell">
+    
+
+    <section class="panel hero-panel">
+      <div class="hero-grid">
+        <div class="hero-top-row">
+          <div class="gauge-box" role="img" aria-label="동작 합격 비율 43">
+    <svg class="gauge-svg" viewBox="0 0 120 120" width="132" height="132" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" fill="none" stroke="#e8eaed" stroke-width="10"/>
+      <circle cx="60" cy="60" r="52" fill="none" stroke="#ff4e42" stroke-width="10" stroke-linecap="round"
+        transform="rotate(-90 60 60)" stroke-dasharray="140.49202346853556 326.7256359733385"/>
+      <text x="60" y="64" text-anchor="middle" class="gauge-num">43</text>
+      <text x="60" y="86" text-anchor="middle" class="gauge-cap">동작</text>
+    </svg>
+  </div>
+          <div class="donut-side" style="flex-direction:row;align-items:center;flex-wrap:wrap;gap:24px;">
+            <div class="donut-wrap" aria-hidden="true">
+              <div class="donut"></div>
+              <div class="donut-hole">
+                <span class="donut-total">86</span>
+                <span class="donut-sub">총 검증</span>
+              </div>
+            </div>
+            <div class="donut-legend">
+              <span class="lg"><i style="background:#0cce6b"></i>Pass 37</span>
+              <span class="lg"><i style="background:#ff4e42"></i>Fail 1</span>
+              <span class="lg"><i style="background:#ffa400"></i>Blocked 12</span>
+              <span class="lg"><i style="background:#9aa0a6"></i>No response 36</span>
+            </div>
+          </div>
+        </div>
+        <div class="mini-spark">
+          <div class="spark-title">영역별 점수 요약</div>
+          <div class="spark-bars">
+            <div class="spark-col"><div class="spark-bar avg" style="height:28px"></div><span class="spark-lab" title="인터랙션">인터랙션</span></div><div class="spark-col"><div class="spark-bar bad" style="height:10px"></div><span class="spark-lab" title="폼">폼</span></div><div class="spark-col"><div class="spark-bar bad" style="height:10px"></div><span class="spark-lab" title="로그인">로그인</span></div><div class="spark-col"><div class="spark-bar bad" style="height:10px"></div><span class="spark-lab" title="페이지 건강도">페이지 건강도</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <details class="fold" open>
+      <summary>
+        <span><span>영역별 점수</span><div class="sum-meta">인터랙션 · 폼 · 로그인 · 건강도</div></span>
+        <span class="chev">›</span>
+      </summary>
+      <div class="fold-body">
+        <div class="bar-chart">
+    <div class="bar-row">
+          <span class="bar-lab">인터랙션</span>
+          <div class="bar-track" aria-hidden="true"><span class="bar-fill avg" style="width:54%"></span></div>
+          <span class="bar-num avg">54</span>
+        </div><div class="bar-row">
+          <span class="bar-lab">폼</span>
+          <div class="bar-track" aria-hidden="true"><span class="bar-fill bad" style="width:11%"></span></div>
+          <span class="bar-num bad">11</span>
+        </div><div class="bar-row">
+          <span class="bar-lab">로그인</span>
+          <div class="bar-track" aria-hidden="true"><span class="bar-fill bad" style="width:0%"></span></div>
+          <span class="bar-num bad">0</span>
+        </div><div class="bar-row">
+          <span class="bar-lab">페이지 건강도</span>
+          <div class="bar-track" aria-hidden="true"><span class="bar-fill bad" style="width:0%"></span></div>
+          <span class="bar-num bad">0</span>
+        </div>
+  </div>
+        <div style="height:16px"></div>
+        <div class="metric-grid">
+          <div class="metric">
+    <div class="metric-head"><span class="metric-name">인터랙션</span><span class="metric-num avg">54</span></div>
+    <div class="metric-track" aria-hidden="true"><span class="metric-fill avg" style="width:54%"></span></div>
+    
+  </div>
+          <div class="metric">
+    <div class="metric-head"><span class="metric-name">폼</span><span class="metric-num bad">11</span></div>
+    <div class="metric-track" aria-hidden="true"><span class="metric-fill bad" style="width:11%"></span></div>
+    
+  </div>
+          <div class="metric">
+    <div class="metric-head"><span class="metric-name">로그인</span><span class="metric-num bad">0</span></div>
+    <div class="metric-track" aria-hidden="true"><span class="metric-fill bad" style="width:0%"></span></div>
+    
+  </div>
+          <div class="metric">
+    <div class="metric-head"><span class="metric-name">페이지 건강도</span><span class="metric-num bad">0</span></div>
+    <div class="metric-track" aria-hidden="true"><span class="metric-fill bad" style="width:0%"></span></div>
+    <span class="metric-sub">HTTP·JS 기반</span>
+  </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="fold">
+      <summary>
+        <span><span>성공</span><div class="sum-meta">37건</div></span>
+        <span class="chev">›</span>
+      </summary>
+      <div class="fold-body">
+        <div class="scroll-x"><table class="tbl"><thead><tr><th>구분</th><th>동작</th><th>페이지</th><th>비고</th><th>증적</th></tr></thead><tbody>
+          <tr><td>interaction</td><td class="td-wrap">버튼 「로그인」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/">/</td><td class="dim td-wrap">클릭 후 반응 확인 (오류·경고 스타일 UI, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_f83636b7_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_f83636b7_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「카카오로 시작하기」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/">/</td><td class="dim td-wrap">클릭 후 반응 확인 (URL 변경, 제목 변경, 알림·라이브 영역, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_30582531_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_30582531_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「회원가입 하기」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/">/</td><td class="dim td-wrap">이동 후 URL(경로·쿼리)가 링크 기대와 일치함.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_7dd95304_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_7dd95304_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「이용요금」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_6b51d00b_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_6b51d00b_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「무료 견적신청」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_82019380_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_82019380_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「무료 견적 알아보기」 클릭 (2/4 동일 라벨)</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_d9002787_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_d9002787_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「무료 견적 알아보기」 클릭 (4/4 동일 라벨)</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_d7cb8934_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_d7cb8934_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「지금 신청하기」 클릭 (3/3 동일 라벨)</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: <a class="ext-link" href="https://pf.kakao.com/_PRFAG" target="_blank" rel="noopener noreferrer">https://pf.kakao.com/_PRFAG</a></td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_268af2d2_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_268af2d2_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「이용약관」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_dd76a7d3_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_dd76a7d3_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「개인정보 처리방침」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_0b8f751d_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_bca94518_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_4db4b63c_bca94518_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「서비스소개」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/estimate">/landing/estimate</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「이용요금」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/estimate">/landing/estimate</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_0512c776_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_af86de3f_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_d1fc1eb2_af86de3f_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「서비스소개」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/terms-of-service">/landing/terms-of-service</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「이용요금」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/terms-of-service">/landing/terms-of-service</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_1f5bc139_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_1f5bc139_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「무료 견적신청」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/terms-of-service">/landing/terms-of-service</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_e2c49ba7_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_ca03f35b_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_c8a285a5_ca03f35b_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「서비스소개」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「이용요금」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_dbed4889_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_dbed4889_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「무료 견적신청」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_5060f548_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_5060f548_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「privacy.kisa.or.kr」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: <a class="ext-link" href="https://privacy.kisa.or.kr/main.do" target="_blank" rel="noopener noreferrer">https://privacy.kisa.or.kr/main.do</a></td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_1e4fda29_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_1e4fda29_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「www.kopico.go.kr」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: <a class="ext-link" href="https://www.kopico.go.kr/main/main.do" target="_blank" rel="noopener noreferrer">https://www.kopico.go.kr/main/main.do</a></td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_bc162c8c_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_bc162c8c_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「www.simpan.go.kr」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: chrome-error://chromewebdata/</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_6b3cd23f_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_6b3cd23f_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「www.spo.go.kr」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: chrome-error://chromewebdata/</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_f5645299_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_f5645299_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「ecrm.cyber.go.kr」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: <a class="ext-link" href="https://ecrm.police.go.kr/minwon/main" target="_blank" rel="noopener noreferrer">https://ecrm.police.go.kr/minwon/main</a></td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_afd4255b_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_5f854fae_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_7c4bd681_5f854fae_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「서비스소개」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/pricing">/landing/pricing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「무료 견적신청」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/pricing">/landing/pricing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_009e2afb_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_009e2afb_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「문의하기」 클릭 (2/2 동일 라벨)</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/pricing">/landing/pricing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: <a class="ext-link" href="https://pf.kakao.com/_PRFAG" target="_blank" rel="noopener noreferrer">https://pf.kakao.com/_PRFAG</a></td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_5465b332_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_5465b332_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「무료 견적 받아보기」 클릭 (2/2 동일 라벨)</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/pricing">/landing/pricing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_8673f457_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_8673f457_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「지금 신청하기」 클릭 (2/2 동일 라벨)</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/pricing">/landing/pricing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 외부 링크가 새 탭에서 열림: <a class="ext-link" href="https://pf.kakao.com/_PRFAG" target="_blank" rel="noopener noreferrer">https://pf.kakao.com/_PRFAG</a></td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_9114f0b9_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_9114f0b9_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「이용약관」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/pricing">/landing/pricing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_f03397af_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_f03397af_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「개인정보 처리방침」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/pricing">/landing/pricing</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before-scrolled.png">before-scrolled</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_af563e8a_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_af563e8a_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「로그인으로 돌아가기」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login/register">/login/register</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「보기」 클릭 (1/2 동일 라벨)</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login/register">/login/register</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (모달·대화상자, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_43c6c2ca_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_43c6c2ca_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「보기」 클릭 (2/2 동일 라벨)</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login/register">/login/register</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (모달·대화상자, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_854b7e57_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_96373ab8_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_8a1a80e3_96373ab8_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「로그인」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login">/login</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (오류·경고 스타일 UI, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_3b654512_f83636b7_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_3b654512_f83636b7_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">버튼 「카카오로 시작하기」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login">/login</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 클릭 후 반응 확인 (URL 변경, 제목 변경, 알림·라이브 영역, 본문·안내 문구 변화).</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_3b654512_30582531_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_3b654512_30582531_pass-state-after.json">state-after</a></td></tr><tr><td>interaction</td><td class="td-wrap">링크 「회원가입 하기」 클릭</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login">/login</td><td class="dim td-wrap">[HTTP 403 응답이지만 페이지 렌더링/클릭 가능] 이동 후 URL(경로·쿼리)가 링크 기대와 일치함.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_3b654512_7dd95304_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_3b654512_7dd95304_pass-state-after.json">state-after</a></td></tr><tr><td>form</td><td class="td-wrap">form</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/">/</td><td class="dim td-wrap">Validation feedback present (intent=true, nativeInvalid=true). Messages: 이메일 올바르지 않습니다. | 이메일 주소에 '@'를 포함해 주세요. 'not-an-email'에 '@'가 없습니다.</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_invalid_email_format_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_invalid_email_format_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_invalid_email_format_pass-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_invalid_email_format_pass-state-after.json">state-after</a></td></tr>
+        </tbody></table></div>
+      </div>
+    </details>
+
+    <details class="fold">
+      <summary>
+        <span><span>실패 · 차단</span><div class="sum-meta">13건</div></span>
+        <span class="chev">›</span>
+      </summary>
+      <div class="fold-body">
+        <div class="scroll-x"><table class="tbl"><thead><tr><th>결과</th><th>구분</th><th>동작</th><th>페이지</th><th>비고</th><th>증적</th></tr></thead><tbody>
+          <tr><td><span class="pill FAIL">FAIL</span></td><td>form</td><td class="td-wrap">form</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/">/</td><td class="dim td-wrap">XHR/fetch error during submit: [{&quot;url&quot;:&quot;<a class="ext-link" href="https://tassi-api.alicerabbit.space:3004/auth/login" target="_blank" rel="noopener noreferrer">https://tassi-api.alicerabbit.space:3004/auth/login</a>&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;status&quot;:401,&quot;resourceType&quot;:&quot;xhr&quot;,&quot;timestamp&quot;:1777447573669,&quot;bodySnippet&quot;:null}]</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png">before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_submit_valid_all_fail-after.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_submit_valid_all_fail-after.png">after</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_submit_valid_all_fail-network.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_submit_valid_all_fail-network.json">network</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_submit_valid_all_fail-state-before.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_submit_valid_all_fail-state-before.json">state-before</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_submit_valid_all_fail-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_0570a4dc_f0_submit_valid_all_fail-state-after.json">state-after</a></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>form</td><td class="td-wrap">form</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td class="dim td-wrap">HTTP 403</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_4db4b63c-after.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_4db4b63c-after.png">after</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_4db4b63c-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_4db4b63c-state-after.json">state-after</a></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>form</td><td class="td-wrap">form</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/estimate">/landing/estimate</td><td class="dim td-wrap">HTTP 403</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_d1fc1eb2-after.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_d1fc1eb2-after.png">after</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_d1fc1eb2-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_d1fc1eb2-state-after.json">state-after</a></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>form</td><td class="td-wrap">form</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/terms-of-service">/landing/terms-of-service</td><td class="dim td-wrap">HTTP 403</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_c8a285a5-after.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_c8a285a5-after.png">after</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_c8a285a5-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_c8a285a5-state-after.json">state-after</a></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>form</td><td class="td-wrap">form</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td class="dim td-wrap">HTTP 403</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_7c4bd681-after.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_7c4bd681-after.png">after</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_7c4bd681-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_7c4bd681-state-after.json">state-after</a></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>form</td><td class="td-wrap">form</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/pricing">/landing/pricing</td><td class="dim td-wrap">HTTP 403</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_cfcb32c3_ac8b990c_before-before.png">after</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_cfcb32c3-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_cfcb32c3-state-after.json">state-after</a></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>form</td><td class="td-wrap">form</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login/register">/login/register</td><td class="dim td-wrap">HTTP 403</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_8a1a80e3-after.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_8a1a80e3-after.png">after</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_8a1a80e3-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_8a1a80e3-state-after.json">state-after</a></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>form</td><td class="td-wrap">form</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login">/login</td><td class="dim td-wrap">HTTP 403</td><td class="td-wrap"><a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png" title="reports/2026-04-29T07-21-49-967Z/artifacts/int_0570a4dc_b0e4ce46_before-before.png">after</a> <a class="pill-link mini" href="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_3b654512-state-after.json" title="reports/2026-04-29T07-21-49-967Z/artifacts/form_load_3b654512-state-after.json">state-after</a></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>login</td><td class="td-wrap">Click: 로그인으로 돌아가기</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login/register">/login/register</td><td class="dim td-wrap">Page load HTTP 403</td><td class="td-wrap"><span class="dim">-</span></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>login</td><td class="td-wrap">Click: 비밀번호 표시</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login/register">/login/register</td><td class="dim td-wrap">Page load HTTP 403</td><td class="td-wrap"><span class="dim">-</span></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>login</td><td class="td-wrap">Click: 로그인</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login">/login</td><td class="dim td-wrap">Page load HTTP 403</td><td class="td-wrap"><span class="dim">-</span></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>login</td><td class="td-wrap">Click: 회원가입 하기</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login">/login</td><td class="dim td-wrap">Page load HTTP 403</td><td class="td-wrap"><span class="dim">-</span></td></tr><tr><td><span class="pill BLOCKED">BLOCKED</span></td><td>login</td><td class="td-wrap">Click: 비밀번호 표시</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login">/login</td><td class="dim td-wrap">Page load HTTP 403</td><td class="td-wrap"><span class="dim">-</span></td></tr>
+        </tbody></table></div>
+      </div>
+    </details>
+
+    <details class="fold">
+      <summary>
+        <span><span>크롤 URL</span><div class="sum-meta">내부 8 · 외부 0 · 발견외부 7</div></span>
+        <span class="chev">›</span>
+      </summary>
+      <div class="fold-body">
+        <p class="hint" style="margin-bottom:10px"><code>discoveredFrom=seed</code>는 시작 URL. 내부/외부를 분리해 표시합니다.</p>
+        <div class="scroll-x"><table class="tbl"><thead><tr><th>구분</th><th>URL</th><th>발견</th><th>depth</th><th>HTTP</th></tr></thead><tbody>
+          <tr><td>내부</td><td class="url-cell" title="https://tassi.alicerabbit.space/">/</td><td class="dim url-cell" title="seed">seed</td><td>0</td><td>200</td></tr><tr><td>내부</td><td class="url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td class="dim url-cell" title="seed">seed</td><td>0</td><td>403</td></tr><tr><td>내부</td><td class="url-cell" title="https://tassi.alicerabbit.space/landing/estimate">/landing/estimate</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td>1</td><td>403</td></tr><tr><td>내부</td><td class="url-cell" title="https://tassi.alicerabbit.space/landing/terms-of-service">/landing/terms-of-service</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td>1</td><td>403</td></tr><tr><td>내부</td><td class="url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td>1</td><td>403</td></tr><tr><td>내부</td><td class="url-cell" title="https://tassi.alicerabbit.space/landing/pricing">/landing/pricing</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing (spa-click)">/landing%20(spa-click)</td><td>1</td><td>403</td></tr><tr><td>내부</td><td class="url-cell" title="https://tassi.alicerabbit.space/login/register">/login/register</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/">/</td><td>1</td><td>403</td></tr><tr><td>내부</td><td class="url-cell" title="https://tassi.alicerabbit.space/login">/login</td><td class="dim url-cell" title="https://tassi.alicerabbit.space/login/register">/login/register</td><td>2</td><td>403</td></tr>
+          
+          <tr><td>발견외부</td><td class="url-cell" title="https://pf.kakao.com/_PRFAG"><a class="ext-link" href="https://pf.kakao.com/_PRFAG" target="_blank" rel="noopener noreferrer">https://pf.kakao.com/_PRFAG</a></td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing">/landing</td><td>-</td><td>-</td></tr><tr><td>발견외부</td><td class="url-cell" title="https://privacy.kisa.or.kr/"><a class="ext-link" href="https://privacy.kisa.or.kr/" target="_blank" rel="noopener noreferrer">https://privacy.kisa.or.kr/</a></td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td>-</td><td>-</td></tr><tr><td>발견외부</td><td class="url-cell" title="https://www.kopico.go.kr/"><a class="ext-link" href="https://www.kopico.go.kr/" target="_blank" rel="noopener noreferrer">https://www.kopico.go.kr/</a></td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td>-</td><td>-</td></tr><tr><td>발견외부</td><td class="url-cell" title="https://www.simpan.go.kr/"><a class="ext-link" href="https://www.simpan.go.kr/" target="_blank" rel="noopener noreferrer">https://www.simpan.go.kr/</a></td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td>-</td><td>-</td></tr><tr><td>발견외부</td><td class="url-cell" title="https://www.spo.go.kr/"><a class="ext-link" href="https://www.spo.go.kr/" target="_blank" rel="noopener noreferrer">https://www.spo.go.kr/</a></td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td>-</td><td>-</td></tr><tr><td>발견외부</td><td class="url-cell" title="https://ecrm.cyber.go.kr/"><a class="ext-link" href="https://ecrm.cyber.go.kr/" target="_blank" rel="noopener noreferrer">https://ecrm.cyber.go.kr/</a></td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy">/landing/privacy-policy</td><td>-</td><td>-</td></tr><tr><td>발견외부</td><td class="url-cell" title="https://pf.kakao.com/_PRFAG"><a class="ext-link" href="https://pf.kakao.com/_PRFAG" target="_blank" rel="noopener noreferrer">https://pf.kakao.com/_PRFAG</a></td><td class="dim url-cell" title="https://tassi.alicerabbit.space/landing/pricing">/landing/pricing</td><td>-</td><td>-</td></tr>
+        </tbody></table></div>
+      </div>
+    </details>
+
+    <details class="fold">
+      <summary>
+        <span><span>Lighthouse — 8/8 성공</span><div class="sum-meta">HTML 리포트 링크</div></span>
+        <span class="chev">›</span>
+      </summary>
+      <div class="fold-body">
+        
+        
+        <div class="metric-grid" style="margin-bottom:14px">
+          <div class="metric">
+    <div class="metric-head"><span class="metric-name">평균 성능</span><span class="metric-num bad">43</span></div>
+    <div class="metric-track" aria-hidden="true"><span class="metric-fill bad" style="width:43%"></span></div>
+    <span class="metric-sub">8p</span>
+  </div>
+          <div class="metric">
+    <div class="metric-head"><span class="metric-name">평균 접근성</span><span class="metric-num avg">89</span></div>
+    <div class="metric-track" aria-hidden="true"><span class="metric-fill avg" style="width:89%"></span></div>
+    
+  </div>
+          <div class="metric">
+    <div class="metric-head"><span class="metric-name">평균 권장</span><span class="metric-num good">96</span></div>
+    <div class="metric-track" aria-hidden="true"><span class="metric-fill good" style="width:96%"></span></div>
+    
+  </div>
+          <div class="metric">
+    <div class="metric-head"><span class="metric-name">평균 SEO</span><span class="metric-num avg">81</span></div>
+    <div class="metric-track" aria-hidden="true"><span class="metric-fill avg" style="width:81%"></span></div>
+    
+  </div>
+        </div>
+        <div class="scroll-x"><table class="tbl"><thead><tr><th>#</th><th>URL</th><th>perf / a11y / best / seo</th><th>결과</th><th>리포트</th></tr></thead><tbody>
+          <tr><td>1</td><td class="url-cell" title="https://tassi.alicerabbit.space/"><a class="ext-link" href="https://tassi.alicerabbit.space/" target="_blank" rel="noopener noreferrer">/</a></td><td>38 / 94 / 96 / 82</td><td><span style="color:var(--lh-pass);font-weight:500">성공</span></td><td><a class="pill-link" href="lighthouse-pages/001.html">HTML</a></td></tr><tr><td>2</td><td class="url-cell" title="https://tassi.alicerabbit.space/landing"><a class="ext-link" href="https://tassi.alicerabbit.space/landing" target="_blank" rel="noopener noreferrer">/landing</a></td><td>44 / 79 / 96 / 82</td><td><span style="color:var(--lh-pass);font-weight:500">성공</span></td><td><a class="pill-link" href="lighthouse-pages/002.html">HTML</a></td></tr><tr><td>3</td><td class="url-cell" title="https://tassi.alicerabbit.space/landing/estimate"><a class="ext-link" href="https://tassi.alicerabbit.space/landing/estimate" target="_blank" rel="noopener noreferrer">/landing/estimate</a></td><td>49 / 89 / 96 / 82</td><td><span style="color:var(--lh-pass);font-weight:500">성공</span></td><td><a class="pill-link" href="lighthouse-pages/003.html">HTML</a></td></tr><tr><td>4</td><td class="url-cell" title="https://tassi.alicerabbit.space/landing/terms-of-service"><a class="ext-link" href="https://tassi.alicerabbit.space/landing/terms-of-service" target="_blank" rel="noopener noreferrer">/landing/terms-of-service</a></td><td>50 / 93 / 96 / 82</td><td><span style="color:var(--lh-pass);font-weight:500">성공</span></td><td><a class="pill-link" href="lighthouse-pages/004.html">HTML</a></td></tr><tr><td>5</td><td class="url-cell" title="https://tassi.alicerabbit.space/landing/privacy-policy"><a class="ext-link" href="https://tassi.alicerabbit.space/landing/privacy-policy" target="_blank" rel="noopener noreferrer">/landing/privacy-policy</a></td><td>44 / 88 / 96 / 82</td><td><span style="color:var(--lh-pass);font-weight:500">성공</span></td><td><a class="pill-link" href="lighthouse-pages/005.html">HTML</a></td></tr><tr><td>6</td><td class="url-cell" title="https://tassi.alicerabbit.space/landing/pricing"><a class="ext-link" href="https://tassi.alicerabbit.space/landing/pricing" target="_blank" rel="noopener noreferrer">/landing/pricing</a></td><td>44 / 74 / 96 / 82</td><td><span style="color:var(--lh-pass);font-weight:500">성공</span></td><td><a class="pill-link" href="lighthouse-pages/006.html">HTML</a></td></tr><tr><td>7</td><td class="url-cell" title="https://tassi.alicerabbit.space/login/register"><a class="ext-link" href="https://tassi.alicerabbit.space/login/register" target="_blank" rel="noopener noreferrer">/login/register</a></td><td>38 / 98 / 96 / 80</td><td><span style="color:var(--lh-pass);font-weight:500">성공</span></td><td><a class="pill-link" href="lighthouse-pages/007.html">HTML</a></td></tr><tr><td>8</td><td class="url-cell" title="https://tassi.alicerabbit.space/login"><a class="ext-link" href="https://tassi.alicerabbit.space/login" target="_blank" rel="noopener noreferrer">/login</a></td><td>40 / 94 / 96 / 73</td><td><span style="color:var(--lh-pass);font-weight:500">성공</span></td><td><a class="pill-link" href="lighthouse-pages/008.html">HTML</a></td></tr>
+        </tbody></table></div>
+        <p class="hint" style="margin-top:12px">작업 디렉터리: <code>C:/devlop/Cursor AI/therod_test/reports/2026-04-29T07-21-49-967Z/lighthouse/</code></p>
+      </div>
+    </details>
+
+    <div class="foot">
+      <div class="foot-links">
+        <a class="pill-link" href="report.md">report.md</a>
+        <a class="pill-link" href="summary.ko.md">summary.ko.md</a>
+        <a class="pill-link" href="report.json">report.json</a>
+      </div>
+      <div>아티팩트: <code>reports/2026-04-29T07-21-49-967Z/artifacts</code></div>
+      <div style="margin-top:8px">입력 요청: <code>config/qa-inputs.REQUEST.env</code></div>
+    </div>
+  </div>
+</body>
+</html>
