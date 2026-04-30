@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://127.0.0.1:3848/ -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>주소 기반 테스트 자동화</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="./주소 기반 테스트 자동화_files/css2" rel="stylesheet">
+    <link rel="stylesheet" href="./주소 기반 테스트 자동화_files/styles.css">
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <div class="hero-badge">자동 탐색 · 폼 검사 · Lighthouse(선택) · 리포트</div>
+        <h1>주소 기반 테스트 자동화</h1>
+        <p class="hero-lead">
+          시작 <strong>URL</strong>을 넣으면 같은 사이트 안의 페이지를 따라가며 확인하고, 폼이 있는 페이지에서는
+          <strong>빈 제출·값 채움·필수 한 곳만 비우기</strong> 같은 제출 시나리오를 자동으로 돌립니다. 그 결과를 숫자로 요약하고,
+          <strong>대시보드·Markdown·JSON</strong> 리포트로 남깁니다. 환경에서 Lighthouse를 켜면 크롤 URL 일부에 대해
+          성능·접근성·SEO 등 점수와 HTML 보고서를 <code>lighthouse/pages/</code>에 둡니다. 로그인·폼 값은 아래 구조화 입력과
+          <code>request-template.env</code>에 적어 두면 다음 실행에 반영할 수 있습니다.
+        </p>
+      </header>
+
+      <div class="grid grid-2">
+        <section class="card">
+          <h2><span class="dot" aria-hidden="true"></span>새 실행</h2>
+          <p class="card-desc">시작 URL로 run 폴더를 만듭니다. 이후 보고서·입력 요청이 그 run에 묶입니다.</p>
+          <label class="field-label" for="startUrl">시작 URL</label>
+          <div class="input-row">
+            <input id="startUrl" type="url" name="startUrl" placeholder="https://example.com" autocomplete="url" spellcheck="false">
+            <button type="button" class="primary" id="btnRun">실행</button>
+          </div>
+          <div class="status-bar" id="runStatus" aria-live="polite"></div>
+        </section>
+
+        <section class="card">
+          <h2><span class="dot" aria-hidden="true"></span>최신 검증 요약</h2>
+          <p class="card-desc">크롤 결과를 숫자로 모은 요약입니다. 상세는 보고서 링크로 이동합니다.</p>
+          <div class="toolbar">
+            <button type="button" class="ghost" id="btnRefresh">새로고침</button>
+            <span id="latestHint"></span>
+          </div>
+          <div class="meta-pills" id="metaPills"><span class="pill">runId: 2026-04-30T00-27-01-382Z</span><span class="pill">target: https://meowdule.github.io/SEO-TESTING-HTML/index.html</span><span class="pill">scannedAt: 2026-04-30T00:27:01.386Z</span></div>
+          <div id="summaryArea"><p class="hint-line">요약 데이터 없음</p></div>
+          <div class="report-actions" id="reportLinks" hidden=""></div>
+          <p class="hint-line" id="engineNote"></p>
+          <details class="raw-json">
+            <summary>원시 report.json 보기</summary>
+            <pre class="json-view" id="latestJson" aria-label="원시 리포트 JSON">{
+  "schema": "qa-platform.run.v1",
+  "runId": "2026-04-30T00-27-01-382Z",
+  "scannedAt": "2026-04-30T00:27:01.386Z",
+  "targetUrl": "https://meowdule.github.io/SEO-TESTING-HTML/index.html",
+  "summary": {
+    "pagesScanned": 0,
+    "note": "Stub run — 실제 크롤/라이트하우스는 외부 엔진 연동 후 채워집니다."
+  },
+  "lighthouse": {
+    "skipped": true,
+    "reason": "not wired in stub"
+  },
+  "pages": [],
+  "recommendations": [
+    "therod_test / cursor_ko_v1 / Playwright 조합 엔진의 JSON 리포트를 이 형식으로 변환해 runs/&lt;id&gt;/report.json 에 덮어쓰면 UI에 즉시 반영됩니다."
+  ]
+}</pre>
+          </details>
+        </section>
+      </div>
+
+      <section class="card" style="margin-top: 1.25rem">
+        <h2><span class="dot" aria-hidden="true"></span>값 요청 — 구조화 입력</h2>
+        <p class="card-desc" id="inputsIntro"></p>
+        <p class="hint-line">
+          <strong>저장 방식:</strong> 아래 입력란에서 「구조화 값 저장」을 누르면
+          <code>inputs-request.json</code>과 <code>request-template.env</code>가 <strong>함께</strong> 갱신됩니다.
+          텍스트 영역만 고친 뒤 「.env만 저장」을 누르면 <strong>파일만</strong> 바뀌고 JSON 폼과는 어긋날 수 있습니다(고급용).
+        </p>
+        <div class="toolbar">
+          <button type="button" class="primary" id="btnSaveInputs">구조화 값 저장</button>
+          <button type="button" class="secondary" id="btnSaveTemplate">.env만 저장</button>
+        </div>
+        <div id="structuredForm"><p class="hint-line">구조화 입력 없음 — 먼저 실행하세요.</p></div>
+      </section>
+
+      <section class="card" style="margin-top: 1.25rem">
+        <h2><span class="dot" aria-hidden="true"></span>요청 템플릿 (.env)</h2>
+        <p class="card-desc">구조화 저장 시 자동 반영됩니다. 직접 수정 후 「.env만 저장」 가능.</p>
+        <div class="toolbar">
+          <button type="button" class="ghost" id="btnCopyTemplate">클립보드 복사</button>
+        </div>
+        <textarea class="template-view" id="templateText" aria-label="요청 템플릿 env"></textarea>
+      </section>
+
+      <p class="footer-note">
+        API: <code>GET /api/latest</code> · <code>POST /api/save-inputs</code> · <code>POST /api/save-template</code> ·
+        <code>POST /api/run</code> · 정적 <code>/runs/&lt;runId&gt;/…</code>
+      </p>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      let lastRunId = null;
+      let lastInputsRequest = null;
+
+      async function api(path, opts) {
+        const r = await fetch(path, {
+          headers: { Accept: "application/json", ...(opts?.headers || {}) },
+          ...opts,
+        });
+        const ct = r.headers.get("content-type") || "";
+        const body = ct.includes("application/json") ? await r.json() : await r.text();
+        if (!r.ok) {
+          const err = typeof body === "object" && body?.error ? body.error : String(body);
+          throw new Error(err || r.statusText);
+        }
+        return body;
+      }
+
+      function setStatus(el, text, kind) {
+        el.textContent = text || "";
+        el.classList.remove("error", "ok");
+        if (kind === "error") el.classList.add("error");
+        if (kind === "ok") el.classList.add("ok");
+      }
+
+      function absUrl(path) {
+        if (!path) return "#";
+        if (path.startsWith("http")) return path;
+        return `${window.location.origin}${path}`;
+      }
+
+      function renderSummary(report) {
+        const el = $("summaryArea");
+        const links = $("reportLinks");
+        const note = $("engineNote");
+        el.innerHTML = "";
+        links.innerHTML = "";
+        links.hidden = true;
+        note.textContent = "";
+
+        if (!report?.verification) {
+          el.innerHTML = '<p class="hint-line">요약 데이터 없음</p>';
+          return;
+        }
+        const v = report.verification;
+        const tiles = [
+          ["탐색 페이지", v.pagesCrawled],
+          ["폼 통과", v.formScenarioPass],
+          ["폼 실패", v.formScenarioFail],
+          ["폼 불명", v.formScenarioUnknown],
+          ["폼 시나리오", v.scenariosRun],
+          ["폼 태그 합계", v.formsDiscovered],
+          ["HTTP 오류 페이지", v.brokenPages],
+          ["콘솔 error 페이지", v.pagesWithJsErrors],
+          ["탐색 경고(합)", v.consoleWarningsOnCrawl],
+          ["API 실패", v.networkApiFailures],
+          ["스크린샷", v.screenshotsTaken],
+          ["Lighthouse 페이지", v.lighthousePagesAudited],
+          ["LH 성능(평균)", v.lighthouseAvgPerformance],
+          ["LH 접근성(평균)", v.lighthouseAvgAccessibility],
+          ["LH 권장(평균)", v.lighthouseAvgBestPractices],
+          ["LH SEO(평균)", v.lighthouseAvgSeo],
+        ];
+        const grid = document.createElement("div");
+        grid.className = "summary-grid";
+        for (const [label, val] of tiles) {
+          const d = document.createElement("div");
+          d.className = "summary-tile";
+          d.innerHTML = `<b>${val ?? "—"}</b><span>${label}</span>`;
+          grid.appendChild(d);
+        }
+        el.appendChild(grid);
+
+        note.textContent = v.engineNote || "";
+
+        const art = report.artifacts || {};
+        if (art.dashboardUrl) {
+          links.hidden = false;
+          const a1 = document.createElement("a");
+          a1.className = "btn-open";
+          a1.href = absUrl(art.dashboardUrl);
+          a1.target = "_blank";
+          a1.rel = "noopener";
+          a1.textContent = "결과 보고서 (대시보드) 열기";
+          links.appendChild(a1);
+        }
+        if (art.markdownUrl) {
+          const a2 = document.createElement("a");
+          a2.className = "link-quiet";
+          a2.href = absUrl(art.markdownUrl);
+          a2.target = "_blank";
+          a2.rel = "noopener";
+          a2.textContent = "report.md";
+          links.appendChild(a2);
+        }
+        if (art.inputsJsonUrl) {
+          const a3 = document.createElement("a");
+          a3.className = "link-quiet";
+          a3.href = absUrl(art.inputsJsonUrl);
+          a3.target = "_blank";
+          a3.rel = "noopener";
+          a3.textContent = "inputs-request.json";
+          links.appendChild(a3);
+        }
+        if (art.screenshotsUrl) {
+          const a4 = document.createElement("a");
+          a4.className = "link-quiet";
+          a4.href = absUrl(art.screenshotsUrl);
+          a4.target = "_blank";
+          a4.rel = "noopener";
+          a4.textContent = "screenshots/";
+          links.appendChild(a4);
+        }
+        if (art.lighthousePagesUrl) {
+          const a5 = document.createElement("a");
+          a5.className = "link-quiet";
+          a5.href = absUrl(art.lighthousePagesUrl);
+          a5.target = "_blank";
+          a5.rel = "noopener";
+          a5.textContent = "lighthouse/pages/";
+          links.appendChild(a5);
+        }
+      }
+
+      function renderStructuredForm(inputsRequest) {
+        const host = $("structuredForm");
+        host.innerHTML = "";
+        if (!inputsRequest?.sections?.length) {
+          host.innerHTML = '<p class="hint-line">구조화 입력 없음 — 먼저 실행하세요.</p>';
+          return;
+        }
+        for (const sec of inputsRequest.sections) {
+          const wrap = document.createElement("div");
+          wrap.className = "struct-section";
+          wrap.dataset.sectionId = sec.id || "";
+          const h = document.createElement("h3");
+          h.textContent = sec.title || sec.id || "섹션";
+          wrap.appendChild(h);
+          for (const f of sec.fields || []) {
+            const fb = document.createElement("div");
+            fb.className = "field-block";
+            const id = `f_${sec.id}_${f.key}`.replace(/[^a-zA-Z0-9_]/g, "_");
+            const lab = document.createElement("label");
+            lab.htmlFor = id;
+            lab.textContent = f.label || f.key;
+            const keyLine = document.createElement("div");
+            keyLine.className = "key";
+            keyLine.textContent = f.key;
+            const inp = document.createElement("input");
+            inp.id = id;
+            inp.type = f.secret ? "password" : "text";
+            inp.value = f.value || "";
+            inp.dataset.key = f.key;
+            inp.autocomplete = "off";
+            const hint = document.createElement("div");
+            hint.className = "hint";
+            hint.textContent = f.hint || "";
+            fb.appendChild(lab);
+            fb.appendChild(keyLine);
+            fb.appendChild(inp);
+            if (f.hint) fb.appendChild(hint);
+            wrap.appendChild(fb);
+          }
+          host.appendChild(wrap);
+        }
+      }
+
+      function collectInputsFromDom() {
+        if (!lastInputsRequest?.sections) return null;
+        const sections = lastInputsRequest.sections.map((sec) => ({
+          id: sec.id,
+          title: sec.title,
+          fields: (sec.fields || []).map((f) => {
+            const id = `f_${sec.id}_${f.key}`.replace(/[^a-zA-Z0-9_]/g, "_");
+            const inp = document.getElementById(id);
+            return { ...f, value: inp ? inp.value : f.value };
+          }),
+        }));
+        return {
+          schema: lastInputsRequest.schema,
+          targetUrl: lastInputsRequest.targetUrl,
+          intro: lastInputsRequest.intro,
+          sections,
+        };
+      }
+
+      async function loadLatest() {
+        const hint = $("latestHint");
+        const jsonEl = $("latestJson");
+        const pills = $("metaPills");
+        const tpl = $("templateText");
+        const intro = $("inputsIntro");
+        hint.textContent = "불러오는 중…";
+        try {
+          const data = await api("/api/latest");
+          if (!data.run) {
+            hint.textContent = "아직 run 없음 — URL 실행으로 생성하세요.";
+            jsonEl.textContent = "";
+            pills.innerHTML = "";
+            tpl.value = "";
+            $("summaryArea").innerHTML = "";
+            $("reportLinks").hidden = true;
+            intro.textContent = "";
+            renderStructuredForm(null);
+            lastRunId = null;
+            lastInputsRequest = null;
+            return;
+          }
+          hint.textContent = "";
+          pills.innerHTML = "";
+          const m = data.run;
+          lastRunId = m.runId;
+          [["runId", m.runId], ["target", m.startUrl], ["scannedAt", m.scannedAt]].forEach(([k, v]) => {
+            const p = document.createElement("span");
+            p.className = "pill";
+            p.textContent = `${k}: ${v}`;
+            pills.appendChild(p);
+          });
+          jsonEl.textContent = JSON.stringify(data.report, null, 2);
+          tpl.value = data.requestTemplate || "";
+          renderSummary(data.report);
+          lastInputsRequest = data.inputsRequest;
+          intro.textContent = data.inputsRequest?.intro || "";
+          renderStructuredForm(data.inputsRequest);
+        } catch (e) {
+          hint.textContent = "";
+          setStatus(hint, String(e.message), "error");
+        }
+      }
+
+      $("btnRefresh").addEventListener("click", () => loadLatest());
+
+      $("btnRun").addEventListener("click", async () => {
+        const input = $("startUrl");
+        const status = $("runStatus");
+        const btn = $("btnRun");
+        const url = input.value.trim();
+        if (!url) {
+          setStatus(status, "URL을 입력하세요.", "error");
+          return;
+        }
+        btn.disabled = true;
+        setStatus(status, "실행 중…", "");
+        try {
+          await api("/api/run", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ startUrl: url }),
+          });
+          setStatus(status, "완료 — 요약·보고서 링크를 확인하세요.", "ok");
+          await loadLatest();
+        } catch (e) {
+          setStatus(status, String(e.message), "error");
+        } finally {
+          btn.disabled = false;
+        }
+      });
+
+      $("btnSaveInputs").addEventListener("click", async () => {
+        const body = collectInputsFromDom();
+        if (!body) return;
+        try {
+          await api("/api/save-inputs", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ runId: lastRunId, ...body }),
+          });
+          await loadLatest();
+        } catch (e) {
+          alert(e.message);
+        }
+      });
+
+      $("btnSaveTemplate").addEventListener("click", async () => {
+        const t = $("templateText").value;
+        try {
+          await api("/api/save-template", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ runId: lastRunId, content: t }),
+          });
+          alert("request-template.env 저장됨");
+        } catch (e) {
+          alert(e.message);
+        }
+      });
+
+      $("btnCopyTemplate").addEventListener("click", async () => {
+        const t = $("templateText").value;
+        if (!t) return;
+        try {
+          await navigator.clipboard.writeText(t);
+          const b = $("btnCopyTemplate");
+          const prev = b.textContent;
+          b.textContent = "복사됨";
+          setTimeout(() => {
+            b.textContent = prev;
+          }, 1400);
+        } catch {
+          alert("클립보드 복사에 실패했습니다.");
+        }
+      });
+
+      loadLatest();
+    </script>
+  
+
+</body></html>
